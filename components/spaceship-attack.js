@@ -4,11 +4,11 @@ const { sampleTime, reduce, throttleTime, mergeMap, switchMap, scan, take, takeW
 const firing$ = (fireButton) => fromEvent(fireButton, 'click')
   .pipe(
     tap(e => {
-      // e.stopPropagation();
-      // e.preventDefault();
+      e.stopPropagation();
+      e.preventDefault();
     }),
     tap(x => console.log('FIRE!', x)),
-    // filter(({ touches }) => touches.length === 2),
-    // filter(({ touches }) => touches[1].target === fireButton),
+    filter(({ touches }) => touches.length === 2),
+    filter(({ touches }) => touches[1].target === fireButton),
   );
 export default (coords, fireButton) => firing$(coords, fireButton);

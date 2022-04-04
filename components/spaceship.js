@@ -1,12 +1,12 @@
 const { combineLatest, range, iif, ReplaySubject, AsyncSubject, Subject, interval, of , fromEvent, merge, empty, delay, from } = rxjs;
 const { distinctUntilChanged, timestamp, sampleTime, reduce, throttleTime, mergeMap, switchMap, scan, take, takeWhile, map, tap, startWith, filter, mapTo, flatMap, toArray } = rxjs.operators;
 
-let canvasWidth, padWidth;
+let canvasWidth, canvasHeight, padWidth, padHeight
 
 setTimeout(() => {
   canvasWidth = parseInt(document.querySelector('canvas').width)
   padWidth = parseInt(getComputedStyle(document.querySelector('.trackpad')).width)
-}, 200)
+}, 0)
 
 /* TODO
   IDEAS: 
@@ -53,12 +53,12 @@ export const spaceship = (startCoords, trackpad) =>
 
     map(({ touches }) => {
       return (((touches[0].pageX / padWidth) * 100) / 100) * canvasWidth
-      // y: (((touches[0].pageY / padHght) * 100) / 100) * canWidthght,
+      // y: (((touches[0].pageY / padHeight) * 100) / 100) * canvasHeight,
     }),
     tap(touch => {}),
     scan(({ x, y }, canvasPixels) => {
       if (canvasPixels + 15 <= canvasWidth && canvasPixels - 15 >= 0) {
-        return { x: canvasPixels, y }
+        return { x: canvasPixels, y: y }
       }
       else return { x, y }
     }, { x: startCoords.x, y: startCoords.y }),

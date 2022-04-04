@@ -1,9 +1,9 @@
-import starfield from './starfield.js';
 import spaceship from './spaceship.js';
+import starfield from './starfield.js';
 import spaceshipShots from './spaceship-attack.js';
 import enemies from './enemies.js';
-import ham from 'https://hamilsauce.github.io/hamhelper/hamhelper1.0.0.js';
-const { date, array, utils, text } = ham;
+// import ham from 'https://hamilsauce.github.io/hamhelper/hamhelper1.0.0.js';
+// const { date, array, utils, text } = ham;
 
 const { combineLatest, iif, ReplaySubject, AsyncSubject, BehaviorSubject, Subject, interval, of , fromEvent, merge, empty, delay, from } = rxjs;
 const { sampleTime, throttleTime, mergeMap, switchMap, scan, take, takeWhile, map, tap, startWith, filter, mapTo } = rxjs.operators;
