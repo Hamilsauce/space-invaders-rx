@@ -38,6 +38,7 @@ body {
   /* color: #E6E6E6; */
   color: var(--white0);
   overflow: hidden;
+  user-select: none;
 }
 
 .app-header {
