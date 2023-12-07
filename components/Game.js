@@ -2,8 +2,6 @@ import spaceship from './spaceship.js';
 import starfield from './starfield.js';
 import spaceshipShots from './spaceship-attack.js';
 import enemies from './enemies.js';
-// import ham from 'https://hamilsauce.github.io/hamhelper/hamhelper1.0.0.js';
-// const { date, array, utils, text } = ham;
 
 const { combineLatest, iif, ReplaySubject, AsyncSubject, BehaviorSubject, Subject, interval, of , fromEvent, merge, empty, delay, from } = rxjs;
 const { sampleTime, throttleTime, mergeMap, switchMap, scan, take, takeWhile, map, tap, startWith, filter, mapTo } = rxjs.operators;
@@ -12,6 +10,7 @@ export class Game {
   constructor(parent) {
     this.canvas = document.createElement('canvas');
     this.parent = parent ? parent : document.body;
+    this.coordsEl = document.querySelector('#app-header-score');
     this.canvas.width = parseInt(getComputedStyle(this.parent).width) - 10;
     this.canvas.height = parseInt(getComputedStyle(this.parent).height);
     this.coords = { x: this.canvas.width / 2, y: this.canvas.height - 30 };
@@ -39,15 +38,21 @@ export class Game {
     )
   }
 
+  static create(parent, config = {}) {
+    return Object.assign(new Game(parent), config).init()
+  }
+
   init() {
-    this.parent.appendChild(this.canvas);
-    this.scene.subscribe(this.render.bind(this))
+    this.parent.append(this.canvas);
+   
+    this.scene.subscribe(this.render.bind(this));
+    
     return this;
   }
 
   render({ stars, spaceship, spaceshipShots, enemies, score }) {
     this.paintStars(stars)
-    this.paintSpaceship(spaceship)
+    this.paintSpaceship.bind(this)(spaceship)
     this.paintSpaceshipShots(spaceshipShots, enemies)
     this.paintEnemies(enemies)
     this.paintScore(score)
@@ -56,6 +61,7 @@ export class Game {
   gameOver(ship, enemies) {
     return enemies.some(enemy => {
       if (this.collision(ship, enemy)) return true;
+    
       return enemy.shots.some(shot => this.collision(ship, shot))
     });
   }
@@ -72,7 +78,6 @@ export class Game {
     this.ctx.fillStyle = '#00ff00';
     this.ctx.font = 'bold 56px san-serif';
     this.ctx.fillText = (`Score: ${score}`, 270, 240);
-    document.querySelector('.app-header-score').textContent = score
   }
 
   paintStars(stars = []) {
@@ -85,8 +90,17 @@ export class Game {
     });
   }
 
+  updateCoords(x, y) {
+    this.coordsEl.textContent = `[ ${x}, ${y} ]`;
+  }
+  
   paintSpaceship({ x, y }) {
-    this.drawTriangle(x, y, 20, '#AE1515', 'up')
+    this.updateCoords(
+      Math.round(x),
+      Math.round(y)
+    );
+    
+    this.drawTriangle(x, y, 20, '#AE1515', 'up');
   }
 
   paintSpaceshipShots(fireEvents, enemies = []) {

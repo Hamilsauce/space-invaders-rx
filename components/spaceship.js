@@ -16,12 +16,15 @@ setTimeout(() => {
   TODO */
 
 const firing = (fireButton, trackpad) =>
-  merge(fromEvent(trackpad, 'click'),
-    fromEvent(fireButton, 'touchstart'))
+  merge(
+    fromEvent(trackpad, 'click'),
+    fromEvent(fireButton, 'touchstart')
+  )
   .pipe(
     tap(e => e.stopPropagation()),
     tap(() => {
       fireButton.classList.add('pressed');
+     
       setTimeout(() => {
         fireButton.classList.remove('pressed')
       }, 40)
@@ -47,8 +50,7 @@ export const spaceship = (startCoords, trackpad) =>
   //   spot.style.top `${touches.y}px`
   //   spot.style.top `${touches.x}px`
   //   return
-  fromEvent(trackpad, 'touchmove')
-  .pipe(
+  fromEvent(trackpad, 'touchmove').pipe(
     tap(e => e.stopPropagation()),
 
     map(({ touches }) => {

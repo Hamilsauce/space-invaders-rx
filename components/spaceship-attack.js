@@ -11,4 +11,5 @@ const firing$ = (fireButton) => fromEvent(fireButton, 'click')
     filter(({ touches }) => touches.length === 2),
     filter(({ touches }) => touches[1].target === fireButton),
   );
+  
 export default (coords, fireButton) => firing$(coords, fireButton);
